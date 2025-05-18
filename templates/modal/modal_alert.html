@@ -1,0 +1,8 @@
+{% load custom_tags %}
+{% with perms_list=permission|split:"," %}
+{% if not request.user|has_permission:perms_list %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <center>{{ message }}</center>
+</div>
+{% endif %}
+{% endwith %}

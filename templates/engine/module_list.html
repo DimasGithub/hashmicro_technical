@@ -1,0 +1,47 @@
+{% extends "base_template.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Module List</h2>
+<table class="table table-bordered table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>Name</th>
+      <th>Module Name</th>
+      <th>Description</th>
+      <th>Installed</th>
+      <th>Version</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for module in modules %}
+    <tr>
+      <td>{{ module.name }}</td>
+      <td>{{ module.module_name}}</td>
+      <td>{{ module.description }}</td>
+      <td>
+        {% if module.installed %}
+          <span class="badge bg-success">Yes</span>
+        {% else %}
+          <span class="badge bg-secondary">No</span>
+        {% endif %}
+      </td>
+      <td>{{ module.version}}</td>
+
+      <td>
+        {% if module.installed %}
+          <a href="{% url 'module:uninstall_module' module.module_id %}" class="btn btn-sm btn-danger">Uninstall</a>
+          <a href="{% url 'module:upgrade_module' module.module_id %}" class="btn btn-sm btn-info">Upgrade</a>
+          <a href="{% url 'module_contoh:list_product'%}" class="btn btn-sm btn-success">Open</a>
+        </li>
+        {% else %}
+          <a href="{% url 'module:install_module' module.module_id %}" class="btn btn-sm btn-primary">Install</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

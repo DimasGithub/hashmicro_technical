@@ -1,0 +1,25 @@
+{% load custom_tags %}
+{% if mode == "Update" %}
+  {% url 'module_contoh:change_product' product.barcode as url %}
+{% else %}
+  {% url 'module_contoh:add_product' as url %}
+{% endif %}
+{% with perms_list="module_contoh.add_product,module_contoh.change_product"|split:"," %}
+{% include "modal/modal_alert.html" with permission="module_contoh.add_product,module_contoh.change_product" message='Limited access, your account has action restrictions' %}
+{% if request.user|has_permission:perms_list %}
+  <form method="post" action={{url}}>
+    {% csrf_token %}
+    <div class="modal-header">
+      <h5 class="modal-title">{{mode}} Product</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+      {{ form.as_p }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-success">{{mode}}</button>
+    </div>
+  </form>
+{% endif %}
+{% endwith %}

@@ -1,0 +1,81 @@
+{% extends "base_template.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Product List</h2>
+
+<button
+  style="margin-bottom:10px;"
+  class="btn btn-primary btn-sm float-end open-create-modal"
+  data-url="{% url 'module_contoh:add_product' %}">
+  Create Product
+</button>
+
+<table class="table table-bordered table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>Name</th>
+      <th>Barcode</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td><img src="{{ product.img_barcode}}" alt="{{product.barcode}}" style="width:300px; height:100px;"></td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+            <button class="btn btn-warning btn-sm open-edit-modal"
+                    data-barcode="{{ product.barcode }}"
+                    data-url="{% url 'module_contoh:change_product' product.barcode %}">
+              Edit
+            </button>
+          <a href="{{ product.get_delete_url }}"
+            class="btn btn-sm btn-danger"
+            onclick="return confirm('Are you sure to delete this data {{ product.name }}?');">
+            Delete
+        </a>
+        </td>
+      </tr>
+    {% endfor %}
+    <div class="modal fade" id="dynamicProductModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="modalContent">
+        </div>
+      </div>
+    </div>
+
+  </tbody>
+</table>
+{% endblock %}
+{% block js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = new bootstrap.Modal(document.getElementById('dynamicProductModal'));
+  document.querySelectorAll('.open-edit-modal, .open-create-modal, .open-delete-modal').forEach(button => {
+    button.addEventListener('click', function () {
+      const url = this.dataset.url;
+      fetch(url)
+        .then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+            return;
+          }
+          return response.text();
+        })
+        .then(html => {
+          if (html) {
+            document.getElementById('modalContent').innerHTML = html;
+            modal.show();
+          }
+        })
+        .catch(err => alert('Invalid load form'));
+    });
+  });
+});
+</script>
+{% endblock %}
