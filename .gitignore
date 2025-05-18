@@ -3,3 +3,5 @@ venv*
 module_contoh/migrations/*
 engine/migrations/*
 hashapp/migrations/*
+**/__pycache__/
+*/**/__pycache__/
