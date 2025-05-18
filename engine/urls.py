@@ -1,6 +1,7 @@
 from django.urls import path
 from engine.views import list_module, install_module, uninstall_module, upgrade_module
 
+
 app_name="module"
 urlpatterns = [
   path('', list_module, name="list_module"),

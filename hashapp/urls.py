@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from .views import custom_login_view, index
+from hashapp import settings
+from django.conf.urls import handler404, handler400, handler500, handler403
 
 urlpatterns = [
     path('', index, name="index"),
@@ -26,3 +28,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('module/', include('engine.urls', namespace='module'))
 ]
+
+if not settings.DEBUG:
+    handler400 = 'hashapp.views.handler400'
+    handler403 = 'hashapp.views.handler403'
+    handler404 = 'hashapp.views.handler404'
+    handler500 = 'hashapp.views.handler500'
