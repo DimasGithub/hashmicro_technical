@@ -1,0 +1,17 @@
+# flyctl launch added from .gitignore
+**/venv*
+**/module_contoh/migrations/*
+**/engine/migrations/*
+**/hashapp/migrations/*
+**/**/__pycache__
+**/*/**/__pycache__
+
+# flyctl launch added from engine/migrations/.gitignore
+engine/migrations/**/[^.]*
+!engine/migrations/**/__init__.py
+
+# flyctl launch added from module_contoh/migrations/.gitignore
+module_contoh/migrations/**/[^.]*
+!module_contoh/migrations/**/__init__.py
+fly.toml
+u
